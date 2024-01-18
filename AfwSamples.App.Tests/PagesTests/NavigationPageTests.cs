@@ -8,6 +8,9 @@ namespace AfwSamples.App.Tests.PagesTests
     {
         private AndroidDriver _driver;
         NavigationPage navigationPage;
+        ForYouPage forYouPage;
+        InterestsPage interestsPage;
+        SavedPage savedPage;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -28,7 +31,11 @@ namespace AfwSamples.App.Tests.PagesTests
 
             _driver = new AndroidDriver(serverUri, driverOptions, TimeSpan.FromSeconds(180));
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
             navigationPage = new(_driver);
+            forYouPage = new(_driver);
+            interestsPage = new(_driver);
+            savedPage = new(_driver);
         }
 
         [OneTimeTearDown]
@@ -43,6 +50,27 @@ namespace AfwSamples.App.Tests.PagesTests
             Assert.That(navigationPage.IsForYouVisible, Is.True);
             Assert.That(navigationPage.IsSavedVisible, Is.True);
             Assert.That(navigationPage.IsInterestsVisible, Is.True);
+        }
+
+        [Test, Order(20)]
+        public void GivenThatApplicationIsLaunchedThenGoToSavedPage()
+        {
+            navigationPage.ClickSaved();
+            Assert.That(savedPage.IsHeaderVisible, Is.True);
+        }
+
+        [Test, Order(30)]
+        public void GivenThatApplicationIsLaunchedThenGoToInterestsPage()
+        {
+            navigationPage.ClickInterets();
+            Assert.That(interestsPage.IsHeaderVisible, Is.True);
+        }
+
+        [Test, Order(40)]
+        public void GivenThatApplicationIsLaunchedThenGoToForYouPage()
+        {
+            navigationPage.ClickForYou();
+            Assert.That(forYouPage.IsHeaderVisible, Is.True);
         }
     }
 }
